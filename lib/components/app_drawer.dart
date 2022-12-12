@@ -40,7 +40,17 @@ class AppDrawer extends StatelessWidget {
               },
             ),
             title: const Text('Modo dark'),
-          )
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text('Gerenciar produtos'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(
+                AppRoutes.PRODUCTS
+              );
+            },
+          ),
         ],
       ),
     );

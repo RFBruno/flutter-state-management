@@ -8,6 +8,7 @@ import 'package:shop/pages/cart_page.dart';
 import 'package:shop/pages/oders_page.dart';
 import 'package:shop/pages/product_detail_page.dart';
 import 'package:shop/pages/products_overview_page.dart';
+import 'package:shop/pages/products_page.dart';
 import 'package:shop/utils/app_routes.dart';
 import 'package:shop/utils/colors.dart';
 
@@ -43,13 +44,14 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Lato',
               colorScheme: Provider.of<ThemeProvider>(context).isDark ? dark : light,
             ),
-            routes: {
-              AppRoutes.HOME: (context) => ProductsOverviewPage(),
-              AppRoutes.PRODUCT_DETAIL: (context) => const ProductDetailPage(),
-              AppRoutes.CART: (context) => const CartPage(),
-              AppRoutes.ORDERS: (context) => const OrdersPage()
-            },
-          );
+        routes: {
+          AppRoutes.HOME:(context) => const ProductsOverviewPage(),
+          AppRoutes.PRODUCT_DETAIL: (context) => const ProductDetailPage(),
+          AppRoutes.CART: (context) => const CartPage(),
+          AppRoutes.ORDERS:(context) => const OrdersPage(),
+          AppRoutes.PRODUCTS:(context) => const ProductsPage(),
+
+        });
         }
       ),
     );
