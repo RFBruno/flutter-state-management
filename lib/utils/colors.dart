@@ -5,11 +5,11 @@ const dark = ColorScheme(
   primary: Colors.indigo,
   onPrimary: Colors.black,
   secondary: Colors.amber,
-  onSecondary: Colors.amberAccent,
+  onSecondary: Colors.black,
   error: Colors.red,
   onError: Colors.black,
   background: Colors.black,
-  onBackground: Colors.black,
+  onBackground: Colors.white,
   surface: Colors.indigo,
   onSurface: Colors.white,
 );

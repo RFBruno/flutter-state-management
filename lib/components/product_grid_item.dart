@@ -24,13 +24,13 @@ class ProductGridItem extends StatelessWidget {
         child: GridTile(
           footer: GridTileBar(
             leading: Consumer<Product>(
-              builder: (context, value, child) => IconButton(
+              builder: (_, value, child) => IconButton(
                 onPressed: () {
                   product.toggleFavorite();
                 },
                 icon: Icon(
                   product.isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: myColors.secondary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),
@@ -39,27 +39,26 @@ class ProductGridItem extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             trailing: IconButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Produto adicionado com sucesso!'),
-                    duration: const Duration(seconds: 2),
-                    action: SnackBarAction(
-                      label: 'Desfazer',
-                      onPressed: () {
-                        cart.removeSingleItem(product.id);
-                      },
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Produto adicionado com sucesso!'),
+                      duration: const Duration(seconds: 2),
+                      action: SnackBarAction(
+                        label: 'Desfazer',
+                        onPressed: () {
+                          cart.removeSingleItem(product.id);
+                        },
+                      ),
                     ),
-                  ),
-                );
-                cart.addItem(product);
-              },
-              icon: Icon(
-                Icons.shopping_cart,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
+                  );
+                  cart.addItem(product);
+                },
+                icon: Icon(
+                  Icons.shopping_cart,
+                  color: Theme.of(context).colorScheme.secondary,
+                )),
             backgroundColor: Colors.black87,
           ),
           child: GestureDetector(

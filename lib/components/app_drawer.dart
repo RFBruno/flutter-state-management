@@ -35,6 +35,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Switch(
               value: themeProvider.isDark,
+              activeColor: Theme.of(context).colorScheme.secondary,
               onChanged: (value) {
                 themeProvider.toggleDark(value);
               },
