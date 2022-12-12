@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
 
-class myGanbColors {
-  final primary = Colors.indigo[400];
-  final secondary = Colors.amberAccent[400];
-  final onError = Colors.red[400];
-}
+const dark = ColorScheme(
+  brightness: Brightness.dark,
+  primary: Colors.indigo,
+  onPrimary: Colors.black,
+  secondary: Colors.amber,
+  onSecondary: Colors.amberAccent,
+  error: Colors.red,
+  onError: Colors.black,
+  background: Colors.black,
+  onBackground: Colors.black,
+  surface: Colors.indigo,
+  onSurface: Colors.white,
+);
 
-
-final myColors = myGanbColors();
+const light = ColorScheme(
+  brightness: Brightness.light,
+  primary: Colors.purple,
+  onPrimary: Colors.white,
+  secondary: Colors.deepOrange,
+  onSecondary: Colors.black,
+  error: Colors.red,
+  onError: Colors.black,
+  background: Colors.black,
+  onBackground: Colors.black,
+  surface: Colors.purple,
+  onSurface: Colors.black,
+);
