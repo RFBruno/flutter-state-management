@@ -4,11 +4,6 @@ import 'package:shop/models/cart.dart';
 import 'package:shop/models/order_list.dart';
 import 'package:shop/models/product_list.dart';
 import 'package:shop/models/theme.dart';
-import 'package:shop/pages/cart_page.dart';
-import 'package:shop/pages/oders_page.dart';
-import 'package:shop/pages/product_detail_page.dart';
-import 'package:shop/pages/products_overview_page.dart';
-import 'package:shop/pages/products_page.dart';
 import 'package:shop/utils/app_routes.dart';
 import 'package:shop/utils/colors.dart';
 
@@ -22,6 +17,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // rotas para a propriedade router do material app
+    // * final routerList = {
+    // * AppRoutes.HOME: (context) => const ProductsOverviewPage(),
+    // *  AppRoutes.PRODUCT_DETAIL: (context) => const ProductDetailPage(),
+    // *  AppRoutes.CART: (context) => const CartPage(),
+    // *  AppRoutes.ORDERS: (context) => const OrdersPage(),
+    // *  AppRoutes.PRODUCTS: (context) => const ProductsPage(),
+    // };
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -35,25 +39,21 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: ChangeNotifierProvider(
-        create: (context) => ThemeProvider(),
-        builder: (context, child){
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              fontFamily: 'Lato',
-              colorScheme: Provider.of<ThemeProvider>(context).isDark ? dark : light,
-            ),
-        routes: {
-          AppRoutes.HOME:(context) => const ProductsOverviewPage(),
-          AppRoutes.PRODUCT_DETAIL: (context) => const ProductDetailPage(),
-          AppRoutes.CART: (context) => const CartPage(),
-          AppRoutes.ORDERS:(context) => const OrdersPage(),
-          AppRoutes.PRODUCTS:(context) => const ProductsPage(),
-
-        });
-        }
-      ),
+          create: (context) => ThemeProvider(),
+          builder: (context, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                fontFamily: 'Lato',
+                colorScheme:
+                    Provider.of<ThemeProvider>(context).isDark ? dark : light,
+              ),
+              // home: ProductsOverviewPage(),
+              // routes: routerList,
+              onGenerateRoute: AppRoutes.generateRoute,
+            );
+          }),
     );
   }
 }
