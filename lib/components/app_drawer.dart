@@ -26,9 +26,19 @@ class AppDrawer extends StatelessWidget {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.payment),
-            title: const Text('Loja'),
+            title: const Text('Pedidos'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(AppRoutes.ORDERS);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text('Gerenciar produtos'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(
+                AppRoutes.PRODUCTS
+              );
             },
           ),
           const Spacer(),
@@ -41,17 +51,7 @@ class AppDrawer extends StatelessWidget {
               },
             ),
             title: const Text('Modo dark'),
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.edit),
-            title: const Text('Gerenciar produtos'),
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed(
-                AppRoutes.PRODUCTS
-              );
-            },
-          ),
+          ),          
         ],
       ),
     );

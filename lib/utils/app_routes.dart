@@ -3,6 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:shop/pages/cart_page.dart';
 import 'package:shop/pages/oders_page.dart';
 import 'package:shop/pages/product_detail_page.dart';
+import 'package:shop/pages/product_form_page.dart';
 import 'package:shop/pages/products_overview_page.dart';
 import 'package:shop/pages/products_page.dart';
 
@@ -14,47 +15,51 @@ class AppRoutes {
   static const PRODUCTS = '/products';
   static const PRODUCT_FORM = '/products-form';
 
-
-  static Route<dynamic>? generateRoute(RouteSettings? settings) {
+  static PageTransition doPageTransition(
+      {required Widget child, RouteSettings? arguments}) {
     const Duration duration = Duration(milliseconds: 450);
     const PageTransitionType type = PageTransitionType.rightToLeftWithFade;
 
-    final PageTransition HOMEPAGE = PageTransition(
-          child: const ProductsOverviewPage(),
-          type: type,
-          duration: duration,
-        );
-    
+    return PageTransition(
+      child: child,
+      type: type,
+      duration: duration,
+      settings: arguments
+    );
+  }
+
+  static Route<dynamic>? generateRoute(RouteSettings? settings) {
     switch (settings!.name) {
       case AppRoutes.PRODUCT_DETAIL:
         if (settings.arguments != null) {
-          return PageTransition(
-              child: const ProductDetailPage(),
-              type: type,
-              duration: duration,
-              settings: settings);
+          return doPageTransition(
+            child: const ProductDetailPage(),
+            arguments: settings
+          );
         }
-        return HOMEPAGE;
+        return doPageTransition(
+          child: const ProductsOverviewPage(),
+        );
       case AppRoutes.CART:
-        return PageTransition(
+        return doPageTransition(
           child: const CartPage(),
-          type: type,
-          duration: duration,
         );
       case AppRoutes.ORDERS:
-        return PageTransition(
+        return doPageTransition(
           child: const OrdersPage(),
-          type: type,
-          duration: duration,
         );
       case AppRoutes.PRODUCTS:
-        return PageTransition(
+        return doPageTransition(
           child: const ProductsPage(),
-          type: type,
-          duration: duration,
+        );
+      case AppRoutes.PRODUCT_FORM:
+        return doPageTransition(
+          child: const ProductFormPage(),
         );
       default:
-        return HOMEPAGE;
+        return doPageTransition(
+          child: const ProductsOverviewPage(),
+        );
     }
   }
 }

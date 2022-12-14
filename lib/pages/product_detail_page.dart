@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/utils/app_routes.dart';
 
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({
@@ -9,7 +12,7 @@ class ProductDetailPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) { 
     final Product product =
         ModalRoute.of(context)!.settings.arguments as Product;
     return Scaffold(
