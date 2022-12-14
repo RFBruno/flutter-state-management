@@ -9,6 +9,7 @@ import 'package:shop/utils/app_routes.dart';
 enum FilterOptions { favorite, all }
 
 class ProductsOverviewPage extends StatefulWidget {
+
   const ProductsOverviewPage({super.key});
 
   @override
@@ -62,7 +63,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
         ],
       ),
       body: ProductGrid(showFavorite: showFavorite),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(),
     );
   }
 }
