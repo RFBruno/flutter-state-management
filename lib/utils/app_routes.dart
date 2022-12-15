@@ -55,6 +55,7 @@ class AppRoutes {
       case AppRoutes.PRODUCT_FORM:
         return doPageTransition(
           child: const ProductFormPage(),
+          arguments: settings
         );
       default:
         return doPageTransition(
