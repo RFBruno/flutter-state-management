@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shop/data/dummy_data.dart';
 import 'package:shop/models/product.dart';
 
 class ProductList with ChangeNotifier {
+  final _baseUrl = 'https://shop-9240a-default-rtdb.firebaseio.com';
   List<Product> _items = dummyProducts;
 
   List<Product> get items => [..._items];
@@ -32,20 +35,43 @@ class ProductList with ChangeNotifier {
   }
 
   void addProduct(Product product) {
-    _items.add(product);
-    notifyListeners();
+    final future = http.post(
+      Uri.parse('$_baseUrl/product.json'),
+      body: jsonEncode({
+        "name": product.name,
+        "description": product.description,
+        "price": product.price,
+        "imageUrl": product.imageUrl,
+        "isFavorite": product.isFavorite
+      }),
+    );
+
+    future.then((response) {
+      final id = jsonDecode(response.body)['name'];
+
+      _items.add(
+        Product(
+          id: id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+        ),
+      );
+      notifyListeners();
+    });
   }
 
-  void updateProduct(Product product){
+  void updateProduct(Product product) {
     int index = _items.indexWhere((p) => p.id == product.id);
 
-    if(index >= 0){
+    if (index >= 0) {
       _items[index] = product;
       notifyListeners();
     }
   }
 
-  void removeProduct(Product product){
+  void removeProduct(Product product) {
     _items.remove(product);
     notifyListeners();
   }
