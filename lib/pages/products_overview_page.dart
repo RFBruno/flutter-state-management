@@ -4,12 +4,12 @@ import 'package:shop/components/app_drawer.dart';
 import 'package:shop/components/badge.dart';
 import 'package:shop/components/product_grid.dart';
 import 'package:shop/models/cart.dart';
+import 'package:shop/models/product_list.dart';
 import 'package:shop/utils/app_routes.dart';
 
 enum FilterOptions { favorite, all }
 
 class ProductsOverviewPage extends StatefulWidget {
-
   const ProductsOverviewPage({super.key});
 
   @override
@@ -18,6 +18,22 @@ class ProductsOverviewPage extends StatefulWidget {
 
 class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   bool showFavorite = false;
+  bool _isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    _isLoading = true;
+    Provider.of<ProductList>(
+      context,
+      listen: false,
+    ).loadProducts().then(
+      (value) {
+        setState(() {
+          _isLoading = false;
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +64,13 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           ),
           Consumer<Cart>(
             child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    AppRoutes.CART,
-                  );
-                },
-                icon: const Icon(Icons.shopping_cart),
-              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutes.CART,
+                );
+              },
+              icon: const Icon(Icons.shopping_cart),
+            ),
             builder: (context, cart, child) => Badge(
               value: cart.itemsCount.toString(),
               child: child!,
@@ -62,8 +78,12 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           ),
         ],
       ),
-      body: ProductGrid(showFavorite: showFavorite),
-      drawer: AppDrawer(),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductGrid(showFavorite: showFavorite),
+      drawer: const AppDrawer(),
     );
   }
 }
