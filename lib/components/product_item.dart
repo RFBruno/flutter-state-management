@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/models/product_list.dart';
 import 'package:shop/utils/app_routes.dart';
@@ -14,6 +15,7 @@ class ProductItem extends StatelessWidget {
   });
 
   Future<void> _showDialog(BuildContext context) {
+    final msg = ScaffoldMessenger.of(context);
     return showDialog<bool>(
       context: context,
       builder: (BuildContext ctx) {
@@ -32,9 +34,19 @@ class ProductItem extends StatelessWidget {
           ],
         );
       },
-    ).then((value) {
+    ).then((value) async {
       if (value ?? false) {
-        Provider.of<ProductList>(context, listen: false).removeProduct(product);
+        try {
+          await Provider.of<ProductList>(context, listen: false)
+              .removeProduct(product);
+        } on HttpException catch (error) {
+          print(error.toString());
+          msg.showSnackBar(
+            SnackBar(
+              content: Text(error.toString()),
+            ),
+          );
+        }
       }
     });
   }
@@ -46,7 +58,7 @@ class ProductItem extends StatelessWidget {
         backgroundImage: NetworkImage(product.imageUrl),
       ),
       title: Text(product.name),
-      trailing: Container(
+      trailing: SizedBox(
         width: 100,
         child: Row(
           children: [

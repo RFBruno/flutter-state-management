@@ -18,7 +18,7 @@ class ProductGridItem extends StatelessWidget {
       listen: false,
     );
     return GestureDetector(
-      onDoubleTap: () => product.toggleFavorite(),
+      onDoubleTap: () => product.toggleFavorite(product),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: GridTile(
@@ -26,7 +26,7 @@ class ProductGridItem extends StatelessWidget {
             leading: Consumer<Product>(
               builder: (_, value, child) => IconButton(
                 onPressed: () {
-                  product.toggleFavorite();
+                  product.toggleFavorite(product);
                 },
                 icon: Icon(
                   product.isFavorite ? Icons.favorite : Icons.favorite_border,
