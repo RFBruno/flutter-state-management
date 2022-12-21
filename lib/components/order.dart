@@ -37,7 +37,7 @@ class _OrderWidgetState extends State<OrderWidget> {
           ),
           if (_expanded)
             Container(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 15,
                 vertical: 4
               ),
