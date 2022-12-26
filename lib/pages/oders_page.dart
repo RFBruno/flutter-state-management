@@ -18,9 +18,12 @@ class _OrdersPageState extends State<OrdersPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    Provider.of<OrderList>(context, listen: false).loadOrders();
+    _refreshOrders();
     
+  }
+
+  Future<void> _refreshOrders() async{
+    Provider.of<OrderList>(context, listen: false).loadOrders();
   }
 
   @override
@@ -31,11 +34,14 @@ class _OrdersPageState extends State<OrdersPage> {
         title: const Text('Meus pedidos'),
       ),
       drawer: const AppDrawer(),
-      body: ListView.builder(
-        itemCount: orders.itemsCount,
-        itemBuilder: (context, index) {
-          return OrderWidget(order: orders.items[index]);
-        },
+      body: RefreshIndicator(
+        onRefresh: () => _refreshOrders(),
+        child: ListView.builder(
+          itemCount: orders.itemsCount,
+          itemBuilder: (context, index) {
+            return OrderWidget(order: orders.items[index]);
+          },
+        ),
       ),
     );
   }

@@ -27,7 +27,7 @@ class _OrderWidgetState extends State<OrderWidget> {
             subtitle:
                 Text(DateFormat('dd/MM/yyyy hh:mm').format(widget.order.date)),
             trailing: IconButton(
-              icon: Icon(Icons.expand_more),
+              icon: _expanded ? const Icon(Icons.expand_more) : const Icon(Icons.expand_less),
               onPressed: () {
                 setState(() {
                   _expanded = !_expanded;
