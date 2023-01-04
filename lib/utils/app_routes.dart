@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shop/pages/auth_or_home_page.dart';
 import 'package:shop/pages/auth_page.dart';
 import 'package:shop/pages/cart_page.dart';
 import 'package:shop/pages/oders_page.dart';
@@ -9,8 +10,7 @@ import 'package:shop/pages/products_overview_page.dart';
 import 'package:shop/pages/products_page.dart';
 
 class AppRoutes {
-  static const LOGIN = '/';
-  static const HOME = '/home';
+  static const AUTH_OR_HOME = '/';
   static const PRODUCT_DETAIL = '/product-detail';
   static const CART = '/cart';
   static const ORDERS = '/orders';
@@ -34,11 +34,11 @@ class AppRoutes {
               child: const ProductDetailPage(), arguments: settings);
         }
         return doPageTransition(
-          child: const ProductsOverviewPage(),
+          child: const AuthOrHomePage(),
         );
-      case AppRoutes.HOME:
+      case AppRoutes.AUTH_OR_HOME:
         return doPageTransition(
-          child: const ProductsOverviewPage(),
+          child: const AuthOrHomePage(),
         );
       case AppRoutes.CART:
         return doPageTransition(
@@ -57,7 +57,7 @@ class AppRoutes {
             child: const ProductFormPage(), arguments: settings);
       default:
         return doPageTransition(
-          child: const AuthPage(),
+          child: const AuthOrHomePage(),
         );
     }
   }

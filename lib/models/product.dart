@@ -21,12 +21,12 @@ class Product with ChangeNotifier {
       required this.imageUrl,
       this.isFavorite = false});
 
-  void toggleFavorite(Product product) async {
+  void toggleFavorite(Product product, String auth, String uid) async {
     isFavorite = !isFavorite;
     notifyListeners();
     await http.patch(
-      Uri.parse('${Constants.productBaseUrl}/${product.id}.json'),
-      body: jsonEncode({"isFavorite": product.isFavorite}),
+      Uri.parse('${Constants.favoritetBaseUrl}/${uid}.json?auth=$auth'),
+      body: jsonEncode({product.id : isFavorite}),
     );
   }
   
