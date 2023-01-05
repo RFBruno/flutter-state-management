@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/data/store.dart';
 import 'package:shop/exceptions/auth_exception.dart';
 
 class Auth with ChangeNotifier {
@@ -13,10 +15,11 @@ class Auth with ChangeNotifier {
   DateTime? _expiryDate;
   String? _token;
   String? _uid;
-  String? _email; 
+  String? _email;
+  Timer? _logoutTimer;
 
   bool get isAuth {
-    final isValid =_expiryDate?.isAfter(DateTime.now()) ?? false;
+    final isValid = _expiryDate?.isAfter(DateTime.now()) ?? false;
     return _token != null && isValid;
   }
 
@@ -27,7 +30,7 @@ class Auth with ChangeNotifier {
   String? get email {
     return isAuth ? _email : null;
   }
- 
+
   String? get uid {
     return isAuth ? _uid : null;
   }
@@ -48,19 +51,24 @@ class Auth with ChangeNotifier {
 
     final body = jsonDecode(response.body);
 
-    if(body['error'] != null){
+    if (body['error'] != null) {
       throw AuthException(body['error']['message']);
-    }else{
+    } else {
       _token = body['idToken'];
       _email = body['email'];
       _uid = body['localId'];
 
-      _expiryDate = DateTime.now().add(
-        Duration(
-          seconds: int.parse(body['expiresIn'])
-        )
-      );
-      notifyListeners();  
+      _expiryDate =
+          DateTime.now().add(Duration(seconds: int.parse(body['expiresIn'])));
+
+      Store.saveMap('userData', {
+        'token': _token,
+        'email': _email,
+        'uid': _uid,
+        'expiryDate': _expiryDate!.toIso8601String()
+      });
+      _autoLogout();
+      notifyListeners();
     }
   }
 
@@ -70,5 +78,46 @@ class Auth with ChangeNotifier {
 
   Future<void> signIn(String email, String password) async {
     return autentication(email, password, _signIn);
+  }
+
+  Future<void> tryAutoLogin() async {
+    if (isAuth) return;
+
+    final userData = await Store.getMap('userData');
+
+    if (userData.isEmpty) return;
+
+    final expiryDate = DateTime.parse(userData['expiryDate']);
+    if (expiryDate.isBefore(DateTime.now())) return;
+
+    _token = userData['token'];
+    _email = userData['email'];
+    _uid = userData['uid'];
+    _expiryDate = expiryDate;
+
+    _autoLogout();
+    notifyListeners();
+  }
+
+  void logout() {
+    _token = null;
+    _uid = null;
+    _email = null;
+    _expiryDate = null;
+    _clearLogoutTimer();
+    Store.remove('userData').then((value) {
+      notifyListeners();
+    });
+  }
+
+  void _clearLogoutTimer() {
+    _logoutTimer?.cancel();
+    _logoutTimer = null;
+  }
+
+  void _autoLogout() {
+    _clearLogoutTimer();
+    int timeToLogout = _expiryDate?.difference(DateTime.now()).inSeconds ?? 0;
+    _logoutTimer = Timer(Duration(seconds: timeToLogout), logout);
   }
 }

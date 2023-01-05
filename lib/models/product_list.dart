@@ -8,8 +8,8 @@ import 'package:shop/models/product.dart';
 import 'package:shop/utils/constants.dart';
 
 class ProductList with ChangeNotifier {
-  final _baseUrl = Constants.productBaseUrl;
-  final _favBaseUrl = Constants.favoritetBaseUrl;
+  final _baseUrl = Constants.productsBaseUrl;
+  final _favBaseUrl = Constants.favoritestBaseUrl;
 
   String _token;
   String _uid;
@@ -35,7 +35,7 @@ class ProductList with ChangeNotifier {
     );
 
     final favResponse = await http.get(
-      Uri.parse('$_favBaseUrl/${_uid}.json?auth=$_token'),
+      Uri.parse('$_favBaseUrl/$_uid.json?auth=$_token'),
     );
 
     if (jsonDecode(response.body) == null) return;

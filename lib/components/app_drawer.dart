@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/models/auth.dart';
 import 'package:shop/models/theme.dart';
 import 'package:shop/utils/app_routes.dart';
 
@@ -8,6 +9,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final auth = Provider.of<Auth>(context);
     return Drawer(
       child: Column(
         children: [
@@ -38,6 +40,17 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pushReplacementNamed(
                 AppRoutes.PRODUCTS
+              );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.exit_to_app),
+            title: const Text('Logout'),
+            onTap: () {
+              auth.logout();
+              Navigator.of(context).pushReplacementNamed(
+                AppRoutes.AUTH_OR_HOME
               );
             },
           ),
