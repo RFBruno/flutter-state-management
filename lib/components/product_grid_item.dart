@@ -21,7 +21,8 @@ class ProductGridItem extends StatelessWidget {
 
     final Auth auth = Provider.of<Auth>(context, listen: false);
     return GestureDetector(
-      onDoubleTap: () => product.toggleFavorite(product, auth.token ?? '', auth.uid ?? ''),
+      onDoubleTap: () =>
+          product.toggleFavorite(product, auth.token ?? '', auth.uid ?? ''),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: GridTile(
@@ -29,7 +30,8 @@ class ProductGridItem extends StatelessWidget {
             leading: Consumer<Product>(
               builder: (_, value, child) => IconButton(
                 onPressed: () {
-                  product.toggleFavorite(product, auth.token ?? '', auth.uid ?? '');
+                  product.toggleFavorite(
+                      product, auth.token ?? '', auth.uid ?? '');
                 },
                 icon: Icon(
                   product.isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -71,9 +73,15 @@ class ProductGridItem extends StatelessWidget {
                 arguments: product,
               );
             },
-            child: Image.network(
-              product.imageUrl,
-              fit: BoxFit.cover,
+            child: Hero(
+              tag: product.id,
+              child: FadeInImage(
+                placeholder: const AssetImage(
+                  'assets/images/product-placeholder.png'
+                ),
+                image: NetworkImage(product.imageUrl),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
